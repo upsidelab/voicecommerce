@@ -4,7 +4,7 @@
   "description": "JavaScript library for integrating ecommerce with Amazon Alexa and Google Assistant",
   "main": "dist",
   "scripts": {
-    "build": "babel lib -d dist --presets es2015,es2017 --plugins transform-runtime,transform-async-to-generator",
+    "build": "babel lib -d dist --presets es2015,es2017 --plugins transform-runtime,transform-async-to-generator --copy-files",
     "test": "mocha --compilers js:babel-core/register ./test/**/*_test.js"
   },
   "keywords": [
@@ -25,5 +25,10 @@
     "babel-preset-es2017": "^6.24.1",
     "eslint": "^5.1.0",
     "mocha": "^5.2.0"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "express": "^4.16.3",
+    "express-oauth-server": "^2.0.0"
   }
 }
