@@ -4,7 +4,7 @@
   "description": "JavaScript library for integrating ecommerce with Amazon Alexa and Google Assistant",
   "main": "dist",
   "scripts": {
-    "build": "babel lib -d dist --presets es2017",
+    "build": "babel lib -d dist --presets es2015,es2017",
     "test": "mocha --compilers js:babel-core/register ./test/**/*_test.js"
   },
   "keywords": [
@@ -19,6 +19,7 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
+    "babel-preset-es2015": "^6.24.1",
     "babel-preset-es2017": "^6.24.1",
     "eslint": "^5.1.0",
     "mocha": "^5.2.0"
