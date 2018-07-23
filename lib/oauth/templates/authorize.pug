@@ -1,0 +1,19 @@
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
+    link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous")
+    title Sign in
+  .container
+    h1 Sign in
+    form.form(method="POST")
+      if message
+        .alert.alert-danger= message
+      .form-group
+        label(for="username") Email address
+        input.form-control(type="text" name="username" id="username" placeholder="Email address")
+      .form-group
+        label(for="password") Password
+        input.form-control(type="password" name="password" id="password" placeholder="Password")
+      input.btn.btn-primary(type="submit" value="Sign in")
