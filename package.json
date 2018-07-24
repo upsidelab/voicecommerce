@@ -6,7 +6,8 @@
   "scripts": {
     "build": "babel lib -d dist --presets es2015,es2017 --plugins transform-runtime,transform-async-to-generator --copy-files",
     "test": "mocha --compilers js:babel-core/register ./test/**/*_test.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "fixlint": "eslint . --fix"
   },
   "keywords": [
     "ecommerce",
