@@ -1,14 +1,24 @@
-VoiceCommerce.js is a library that makes it easy to build voice integrations for ecommerce.
+VoiceCommerce is a library that makes it to connect ecommerce stores with
+voice user interfaces, especially Amazon Alexa and Google Assistant.
 
-## Installing voicecommerce
+Currently it works with any [Vue Storefront](https://vuestorefront.io)-based
+store, allowing developers to quickly build voice integrations that provide
+common ecommerce features.
+
+## Installing VoiceCommerce
+
+To install the library in your local node environment, run:
 
 `npm install --save voicecommerce`
+
+Then, in your project code include the following, to easily connect to
+VueStorefront store.
 
 ```javascript
 const {VueStorefrontApi, Authentication, InMemoryAuthenticationPersistence} = require('voicecommerce')
 
 const api = new VueStorefrontApi({ endpoint: 'https://demo.vuestorefront.io' })
-const authentication = new Authentication(new InMemoryAuthenticationPersistence()); // implement persistence for your own database
+const authentication = new Authentication(new InMemoryAuthenticationPersistence());
 ```
 
 ## Using with Jovo
@@ -16,7 +26,38 @@ const authentication = new Authentication(new InMemoryAuthenticationPersistence(
 The easiest way to start building voice integrations for ecommerce is with Jovo framework.
 To bootstrap a project, follow this guide: [https://www.jovo.tech/blog/project-1-hello-world/](https://www.jovo.tech/blog/project-1-hello-world/)
 
-Once you get the hello world project working, you can start using voicecommerce to easily enable ecommerce functions in your Alexa Skill and Google Assistant action.
+Once you get the hello world project working, you can start using VoiceCommerce
+to easily enable ecommerce functions in your Alexa Skill and Google Assistant
+ action.
+
+*Note: it's impossible to use built-in OAuth when running the skill code on
+AWS Lambda - you need to use the "Webhook" mode that Jovo provides.
+For local testing, you can use [ngrok](https://ngrok.com/) to create a publicly
+available endpoint tunneled to code running on your machine.*
+
+### Configuring account linking in Alexa Skills Kit Console
+
+When building voice integrations for ecommerce, you'll most likely need to
+allow the user to sign in to the store.
+This is done via "account linking" feature (available both in Alexa and
+Google Assistant).
+
+To get started with Alexa, go to
+[Alexa Skills Kit Console](https://developer.amazon.com) and in the "Build"
+section, navigate to "Account Linking" configuration panel.
+
+![Setting up account linking for voice commerce](docs/img/amazon-console-oauth-configuration.png)
+
+Then, do the following:
+1. Enable account linking using the toggle at the top
+2. Select "Auth Code Grant" as authorization grant type
+3. Set `https://YOUR_VOICE_APP_ENDPOINT/oauth/authorize` as Authorization URI
+4. Set `https://YOUR_VOICE_APP_ENDPOINT/oauth/token` as Access Token URI
+5. [Generate Client ID and Client Secret](https://www.oauth.com/oauth2-servers/client-registration/client-id-secret/) and set them in appropriate fields
+6. Keep Client Authorization Scheme set to HTTP Basic
+7. Click "Save" at the top
+
+### Adding OAuth and ordering to code
 
 In the index.js file of your jovo project add OAuth handler:
 ```javascript
@@ -52,3 +93,74 @@ Then, in the app/app.js file add the following to one of the intents:
     }
   },
 ```
+
+## Implementing persistence
+
+The built-in `InMemoryAuthenticationPersistence` was made for demo purposes only
+and you shouldn't rely on it.
+
+Depending on the database you're using, you'll need to implement an adapter
+for storing OAuth data.
+
+The adapter interface requires all of the methods specified below.
+All of them are required to return promises or be defined as `async`.
+
+`saveAuthorizationCode({authorizationCode, expiresAt, redirectUri, userId, userApiToken, userApiRefreshToken, clientId})` - stores authorizationCode and related data for later use
+`getAuthorizationCode(authorizationCode)` - retrieves previously stored authorization code and all associated data. Returns object of the following structure:
+```javascript
+{
+  code: authorizationCode,
+  expiresAt: expiresAt,
+  redirectUri: redirectUri,
+  client: { id: clientId },
+  user: { id: userId, apiToken: userApiToken, apiRefreshToken: userApiRefreshToken }
+}
+```
+
+`deleteAuthorizationCode` - deletes authorizationCode and all related data, returns `true` if code was found in the database.
+
+`saveToken({accessToken, accessTokenExpiresAt, refreshToken, refreshTokenExpiresAt, userId, userApiToken, userApiRefreshToken, clientId})` - stores accessToken and related data for later use
+
+`getAccessToken(accessToken)` - retrieves previously stored access token and all associated data. Returns object of the following structure:
+```javascript
+{
+  accessToken: accessToken,
+  accessTokenExpiresAt: accessTokenExpiresAt,
+  client: { id: clientId },
+  user: { id: userId, apiToken: userApiToken, apiRefreshToken: userApiRefreshToken }
+}
+```
+
+`getRefreshToken(refreshToken)` - retrieves previously stored refresh token and all associated data. Returns object of the following structure:
+```javascript
+{
+  refreshToken: refreshToken,
+  refreshTokenExpiresAt: refreshTokenExpiresAt,
+  client: { id: clientId },
+  user: { id: userId, apiToken: userApiToken, apiRefreshToken: userApiRefreshToken }
+}
+```
+
+`deleteRefreshToken(refreshToken)` - deletes refreshToken and all associated data. Returns true if refresh token was found in the database.
+
+## Roadmap
+
+The major features that are coming up include:
+
+- Amazon Pay support
+- Google Pay support
+
+
+## Contributing
+
+We're always open for contributions. If you'd like to get involved, contact us
+at [hello@upsidelab.io](mailto:hello@upsidelab.io).
+
+If you've found any bugs or have ideas for new features you can create an issue
+on GitHub.
+
+## License
+
+VoiceCommerce is provided under the MIT license.
+
+Please see [LICENSE](/LICENSE) for licensing details.
