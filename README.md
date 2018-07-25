@@ -62,7 +62,7 @@ Then, do the following:
 In the index.js file of your jovo project add OAuth handler:
 ```javascript
   ...
-  oauthConfig = {
+  const oauthConfig = {
     clients: [
       {
         clientId: 'XXXXXX',
@@ -99,7 +99,9 @@ Then, in the app/app.js file add the following to one of the intents:
   },
 ```
 
-## Implementing persistence
+## Configuration
+
+### Implementing persistence
 
 The built-in `InMemoryAuthenticationPersistence` was made for demo purposes only
 and you shouldn't rely on it.
@@ -147,6 +149,29 @@ All of them are required to return promises or be defined as `async`.
 ```
 
 `deleteRefreshToken(refreshToken)` - deletes refreshToken and all associated data. Returns true if refresh token was found in the database.
+
+### Setting custom login screen
+
+To customize tthe login screen, set the `login.template` property in the config passed to `oauthHandler`.
+VoiceCommerce uses [pug](https://pugjs.org/api/getting-started.html) for templating.
+
+```javascript
+const oauthConfig = {
+  login: {
+    template: 'custom_login.pug'
+  }
+  clients: [...]
+}
+```
+
+The login form should send a `POST` request to the the same URL, with `username` and `password` fields.
+
+```pug
+form(method="POST")
+  input(type="text" name="username")
+  input(type="password" name="password")
+  input(type="submit" value="Submit")
+```
 
 ## Roadmap
 
