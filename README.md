@@ -87,14 +87,18 @@ In the index.js file of your jovo project add OAuth handler:
 
 Then, in the app/app.js file add the following to one of the intents:
 ```javascript
+  const { Reorder } = require('voicecommerce')
+
   'HelloWorldIntent': function() {
     const user = authentication.getUser(this.getAccessToken())
     if (!user) {
       this.alexaSkill.showAccountLinkingCard()
       this.tell('Please link your account before making purchases')
     } else {
-      api.reorder(user)
-      this.tell('Ordering the same products as usual')
+      const reorder = new Reorder(api)
+      reorder.call(user).then(() => {
+        this.tell('Ordering the same products as usual')
+      })
     }
   },
 ```
