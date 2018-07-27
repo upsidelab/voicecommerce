@@ -69,7 +69,7 @@ Then, in the app/app.js file add the following to one of the intents:
   'HelloWorldIntent': function() {
     const user = authentication.getUser(this.getAccessToken())
     if (!user) {
-      this.alexaSkill.showAccountLinkingCard()
+      this.alexaSkill().showAccountLinkingCard()
       this.tell('Please link your account before making purchases')
       return;
     }
