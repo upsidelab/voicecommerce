@@ -67,16 +67,17 @@ Then, in the app/app.js file add the following to one of the intents:
   const { Reorder } = require('voicecommerce')
 
   'HelloWorldIntent': function() {
-    const user = authentication.getUser(this.getAccessToken())
-    if (!user) {
-      this.alexaSkill().showAccountLinkingCard()
-      this.tell('Please link your account before making purchases')
-      return;
-    }
+    authentication.getUser(this.getAccessToken()).then((user) => {
+      if (!user) {
+        this.alexaSkill().showAccountLinkingCard()
+        this.tell('Please link your account before making purchases')
+        return;
+      }
 
-    const reorder = new Reorder(api)
-    reorder.call(user).then(() => {
-      this.tell('Ordering the same products as usual')
+      const reorder = new Reorder(api)
+      reorder.call(user).then(() => {
+        this.tell('Ordering the same products as usual')
+      })
     })
   },
 ```
