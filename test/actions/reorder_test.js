@@ -16,6 +16,7 @@ describe("Reorder", () => {
     let orderStub = sinon.stub()
     sinon.stub(vueStorefrontApi, "getUserId").returns(1)
     sinon.stub(vueStorefrontApi, "makeOrder").callsFake(orderStub)
+    sinon.stub(vueStorefrontApi, "createCart").returns("cartid")
     sinon.stub(GetLastOrder.prototype, "call").returns(lastOrder)
 
     let reorderCmd = new Reorder(vueStorefrontApi)
@@ -31,6 +32,7 @@ describe("Reorder", () => {
 
 
     vueStorefrontApi.getUserId.restore()
+    vueStorefrontApi.createCart.restore()
     vueStorefrontApi.makeOrder.restore()
     GetLastOrder.prototype.call.restore()
   })
