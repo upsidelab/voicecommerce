@@ -5,6 +5,8 @@ Currently it works with any [Vue Storefront](https://vuestorefront.io)-based
 store, allowing developers to quickly build voice integrations that provide
 common ecommerce features.
 
+[![VoiceCommerce Demo](docs/img/demo-video-thumbnail.jpg)](https://www.youtube.com/watch?v=6yxeykq3XGs)
+
 ## Installing VoiceCommerce
 
 To install the library in your local node environment, run:
