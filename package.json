@@ -1,6 +1,6 @@
 {
   "name": "voicecommerce",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "JavaScript library for integrating ecommerce with Amazon Alexa and Google Assistant",
   "main": "dist",
   "scripts": {
